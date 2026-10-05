@@ -1,0 +1,15 @@
+# Client intake / private notes (contains personal contact info)
+DOCS/
+
+# Wrangler / Cloudflare local state
+.wrangler/
+.dev.vars
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
