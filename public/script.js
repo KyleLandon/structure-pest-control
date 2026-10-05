@@ -1,6 +1,78 @@
 (function () {
   "use strict";
 
+  // Service area: 40-mile radius around Poth, covering the listed towns
+  var mapEl = document.getElementById("serviceMap");
+  if (mapEl && window.L) {
+    var poth = [29.0694, -98.0797];
+    var towns = [
+      { name: "Poth", ll: poth, home: true },
+      { name: "Floresville", ll: [29.1336, -98.1561] },
+      { name: "La Vernia", ll: [29.3563, -98.1178] },
+      { name: "Stockdale", ll: [29.2336, -97.9614] },
+      { name: "Sutherland Springs", ll: [29.273, -98.0564] },
+      { name: "Falls City", ll: [28.9791, -98.0189] },
+      { name: "Karnes City", ll: [28.885, -97.9008] },
+      { name: "Pleasanton", ll: [28.9672, -98.4786] },
+      { name: "Seguin", ll: [29.5688, -97.9647] },
+      { name: "San Antonio", ll: [29.4241, -98.4936] }
+    ];
+
+    var map = L.map(mapEl, {
+      scrollWheelZoom: false,
+      zoomControl: true
+    });
+    map.setView(poth, 9);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+      attribution: "&copy; OpenStreetMap"
+    }).addTo(map);
+
+    var radius = L.circle(poth, {
+      radius: 64374,
+      color: "#168a46",
+      weight: 2,
+      fillColor: "#22c55e",
+      fillOpacity: 0.14
+    }).addTo(map);
+
+    towns.forEach(function (town) {
+      var marker = L.circleMarker(town.ll, {
+        radius: town.home ? 8 : 5.5,
+        color: town.home ? "#06192e" : "#0b5fa5",
+        weight: 2,
+        fillColor: town.home ? "#22c55e" : "#ffffff",
+        fillOpacity: 1
+      }).addTo(map);
+      marker.bindTooltip(town.home ? "Poth · home base" : town.name, {
+        permanent: !!town.home,
+        direction: "top",
+        offset: [0, -6],
+        className: "map-tip"
+      });
+    });
+
+    var frameArea = function () {
+      map.invalidateSize();
+      map.fitBounds(radius.getBounds(), { padding: [18, 18] });
+    };
+    frameArea();
+
+    var resizeMap = function () { frameArea(); };
+    var wrap = mapEl.closest(".reveal");
+    if (wrap && "MutationObserver" in window) {
+      var watcher = new MutationObserver(function () {
+        if (wrap.classList.contains("is-visible")) {
+          resizeMap();
+          watcher.disconnect();
+        }
+      });
+      watcher.observe(wrap, { attributes: true, attributeFilter: ["class"] });
+    }
+    window.addEventListener("load", resizeMap);
+    setTimeout(resizeMap, 400);
+  }
+
   // Footer year
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -133,7 +205,7 @@
 
   // Spotlight hover on cards
   if (finePointer) {
-    var spots = document.querySelectorAll(".bento__card:not(.bento__card--cta), .feature, .step");
+    var spots = document.querySelectorAll(".bento__card:not(.bento__card--cta), .feature, .step, .plan, .review");
     spots.forEach(function (card) {
       card.classList.add("spot");
       card.addEventListener("mousemove", function (e) {

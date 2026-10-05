@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="/styles.css" />
 
   <!-- Local business schema for Google -->
@@ -90,10 +91,10 @@
       </a>
 
       <nav class="nav" id="nav" aria-label="Primary">
+        <a href="#plans">Plans</a>
+        <a href="#reviews">Reviews</a>
         <a href="#services">Services</a>
-        <a href="#why-us">Why Us</a>
         <a href="#areas">Service Area</a>
-        <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
         <a class="btn btn--accent nav__cta" href="tel:+18305550123">Call (830) 555-0123</a>
       </nav>
@@ -147,6 +148,7 @@
               <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
               (830) 555-0123
             </a>
+            <a class="hero__plans" href="#plans">Plans from $44.99/mo <span aria-hidden="true">→</span></a>
           </div>
           <dl class="hero__stats reveal">
             <div><dt>Licensed</dt><dd>&amp; insured in Texas</dd></div>
@@ -193,11 +195,106 @@
       </div>
     </div>
 
+    <!-- Reviews: sample quotes until a live Google listing exists -->
+    <section class="proof" id="reviews">
+      <div class="container">
+        <div class="proof__top reveal">
+          <div>
+            <span class="label"><i>★</i> Google reviews</span>
+            <h2>What a visit actually feels like.</h2>
+          </div>
+          <a class="btn btn--accent" href="#plans">See plans</a>
+        </div>
+
+        <div class="proof__grid">
+          <figure class="review reveal">
+            <div class="review__stars" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
+            <blockquote>“They texted when they were on the way and sent photos of where the ants were getting in. First company that’s ever done that.”</blockquote>
+            <figcaption><strong>Maria G.</strong><span>Floresville</span></figcaption>
+          </figure>
+          <figure class="review reveal">
+            <div class="review__stars" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
+            <blockquote>“Mice in the barn and the attic. They sealed the gaps and came back to check. We haven’t seen one since.”</blockquote>
+            <figcaption><strong>James R.</strong><span>Poth</span></figcaption>
+          </figure>
+          <figure class="review reveal">
+            <div class="review__stars" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
+            <blockquote>“Clear price before they started, no contract, and they showed up when they said they would.”</blockquote>
+            <figcaption><strong>Danielle S.</strong><span>La Vernia</span></figcaption>
+          </figure>
+        </div>
+        <p class="proof__note reveal">Example quotes for the layout. Swap these for live Google reviews before customers see the site.</p>
+      </div>
+    </section>
+
+    <!-- Draft pricing from the South Texas sheet. Confirm with Kurt before launch. -->
+    <section class="section section--tint" id="plans">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="label"><i>01</i> Plans</span>
+          <h2>The price is on the page.</h2>
+          <p class="section__intro">
+            Month-to-month recurring protection. No contract, and if pests come back between
+            visits, we come back at no charge.
+          </p>
+        </div>
+
+        <div class="plans">
+          <article class="plan reveal">
+            <h3>Essential</h3>
+            <p class="plan__cadence">Quarterly exterior, interior as needed</p>
+            <p class="plan__price"><span class="plan__from">$149 to start</span>$44.99<span>/mo</span></p>
+            <ul>
+              <li>Ants, roaches, spiders, and wasps</li>
+              <li>Crickets, silverfish, common invaders</li>
+              <li>Interior service when you need it</li>
+              <li>Re-service included between visits</li>
+            </ul>
+            <a class="btn btn--outline btn--block" href="#contact">Get Essential</a>
+          </article>
+
+          <article class="plan plan--featured reveal">
+            <span class="plan__flag">Most popular</span>
+            <h3>Complete</h3>
+            <p class="plan__cadence">Home plus yard pests</p>
+            <p class="plan__price"><span class="plan__from">$149 to start</span>$69.99<span>/mo</span></p>
+            <ul>
+              <li>Everything in Essential</li>
+              <li>Fire ants, fleas, and ticks</li>
+              <li>Expanded yard and perimeter</li>
+              <li>Re-service included between visits</li>
+            </ul>
+            <a class="btn btn--accent btn--block" href="#contact">Get Complete</a>
+          </article>
+
+          <article class="plan reveal">
+            <h3>Total Property</h3>
+            <p class="plan__cadence">Homes, acreage, shops, and barns</p>
+            <p class="plan__price"><span class="plan__from">From · $199 to start</span>$99.99<span>/mo</span></p>
+            <ul>
+              <li>Everything in Complete</li>
+              <li>Rodent monitoring</li>
+              <li>Shops, barns, and extra structures</li>
+              <li>Priced for the area we treat</li>
+            </ul>
+            <a class="btn btn--outline btn--block" href="#contact">Get Total Property</a>
+          </article>
+        </div>
+
+        <p class="plans__note reveal">
+          Prices are for a typical home on a normal lot. Larger homes and extra acreage are priced
+          by the area we treat, not the whole property. One-time service starts at $179. Termite,
+          rodent, and specialty work are quoted separately. Commercial plans start at $99/month.
+          <a class="inline-link" href="#contact">Request a quote</a>
+        </p>
+      </div>
+    </section>
+
     <!-- Services -->
     <section class="section" id="services">
       <div class="container">
         <div class="section__head reveal">
-          <span class="label"><i>01</i> Services</span>
+          <span class="label"><i>02</i> Services</span>
           <h2>Everything you need to keep pests out — and keep them out.</h2>
           <p class="section__intro">
             From routine prevention to urgent infestations, we handle what South Texas throws
@@ -219,7 +316,7 @@
                 way. One-time treatments or recurring protection plans built around your home.
               </p>
               <ul class="tags">
-                <li>Quarterly &amp; bi-monthly plans</li>
+                <li>Plans from $44.99/mo</li>
                 <li>Interior + exterior barrier</li>
                 <li>Pet &amp; kid conscious</li>
               </ul>
@@ -239,7 +336,7 @@
                 ag operations, with the documentation your inspections require.
               </p>
               <ul class="tags">
-                <li>Custom schedules</li>
+                <li>From $99/month</li>
                 <li>Inspection-ready reports</li>
                 <li>After-hours available</li>
               </ul>
@@ -283,7 +380,7 @@
     <section class="section section--dark" id="why-us">
       <div class="container why">
         <div class="why__head reveal">
-          <span class="label label--light"><i>02</i> Why Structure</span>
+          <span class="label label--light"><i>03</i> Why Structure</span>
           <h2>Most pest companies run on clipboards. We don't.</h2>
           <p class="section__intro">
             We built Structure around better tools, better products and better communication,
@@ -330,7 +427,7 @@
       <div class="container">
         <div class="section__head section__head--row reveal">
           <div>
-            <span class="label"><i>03</i> How it works</span>
+            <span class="label"><i>04</i> How it works</span>
             <h2>Three steps to a pest-free property.</h2>
           </div>
           <a class="arrow-link" href="#contact">Start with a free quote <span aria-hidden="true">→</span></a>
@@ -359,17 +456,14 @@
     <!-- Service area -->
     <section class="section section--tint" id="areas">
       <div class="container areas">
-        <div class="areas__media reveal">
-          <!-- Swap for a map image or Google Maps embed -->
-          <div class="media media--map" role="img" aria-label="Map of Structure Pest Control service area in South Texas">
-            <span class="media__label">Service area map</span>
-            <span class="media__pin" style="--x:48%;--y:52%"><b></b>Poth</span>
-            <span class="media__pin" style="--x:30%;--y:30%"><b></b>San Antonio</span>
-            <span class="media__pin" style="--x:60%;--y:38%"><b></b>Floresville</span>
+        <div class="areas__media">
+          <div class="service-map-wrap reveal">
+            <div class="service-map" id="serviceMap" role="region" aria-label="Map of the service area, about 40 miles around Poth, Texas"></div>
+            <a class="service-map__google" href="https://www.google.com/maps/@29.22,-98.22,9z" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
           </div>
         </div>
         <div class="areas__content reveal">
-          <span class="label"><i>04</i> Service area</span>
+          <span class="label"><i>05</i> Service area</span>
           <h2>Based in Poth. Serving Wilson County, San Antonio and the country in between.</h2>
           <p class="section__intro">
             We serve homes, ranches and businesses across South Texas. Don't see your town?
@@ -397,7 +491,7 @@
     <section class="section" id="faq">
       <div class="container faq-layout">
         <div class="faq-layout__head reveal">
-          <span class="label"><i>05</i> FAQ</span>
+          <span class="label"><i>06</i> FAQ</span>
           <h2>Common questions.</h2>
           <p class="section__intro">Still have one? Call us at <a class="inline-link" href="tel:+18305550123">(830) 555-0123</a> and a real person will pick up.</p>
         </div>
@@ -408,7 +502,7 @@
           </details>
           <details class="faq__item">
             <summary>How often should I have my home treated?</summary>
-            <p>For most South Texas homes, quarterly service keeps common pests under control year-round. Properties with heavier pressure, such as acreage or homes near fields and creeks, may benefit from bi-monthly visits. We'll recommend a schedule after your first inspection.</p>
+            <p>For most South Texas homes, Essential ($44.99/mo after a $149 first visit) keeps common pests under control with quarterly exterior service. Yards with fire ants, fleas, or ticks usually do better on Complete ($69.99/mo). Acreage, shops, and barns are quoted on Total Property, from $99.99/mo. We'll recommend a plan after a free inspection.</p>
           </details>
           <details class="faq__item">
             <summary>Do you offer one-time treatments or do I need a contract?</summary>
@@ -434,7 +528,7 @@
     <section class="section section--contact" id="contact">
       <div class="container contact">
         <div class="contact__info reveal">
-          <span class="label label--light"><i>06</i> Get in touch</span>
+          <span class="label label--light"><i>07</i> Get in touch</span>
           <h2>Let's get the pests out of your way.</h2>
           <p class="section__intro">
             Fill out the form or give us a call. We respond during business hours, usually the same day.
@@ -561,6 +655,10 @@
     <div class="footer__wordmark" aria-hidden="true">Structure</div>
     <div class="container footer__bottom">
       <span>&copy; <span id="year"></span> Structure Pest Control. All rights reserved.</span>
+      <a class="footer__credit" href="https://landonandco.com" target="_blank" rel="noopener noreferrer">
+        <img src="/assets/landon-co.png" width="196" height="200" alt="" />
+        <span>Built by Landon &amp; Co.</span>
+      </a>
       <span>Licensed &amp; insured in the State of Texas.</span>
     </div>
   </footer>
@@ -571,6 +669,7 @@
     Call (830) 555-0123
   </a>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
   <script src="/script.js" defer></script>
 </body>
 </html>
