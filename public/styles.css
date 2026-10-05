@@ -349,7 +349,10 @@ h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spac
 
 /* Service-area map */
 .areas__media { min-width: 0; }
-.service-map-wrap { position: relative; border-radius: var(--r-lg); box-shadow: var(--shadow); }
+.service-map-wrap {
+  position: relative; z-index: 0; isolation: isolate;
+  border-radius: var(--r-lg); box-shadow: var(--shadow);
+}
 .service-map {
   aspect-ratio: 1 / 1;
   border-radius: var(--r-lg);
