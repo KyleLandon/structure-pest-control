@@ -73,6 +73,77 @@
     setTimeout(resizeMap, 400);
   }
 
+  // Bend the hero route under the paragraph so it doesn't run through the type
+  var routeSvg = document.querySelector(".route");
+  if (routeSvg) {
+    var layoutRoute = function () {
+      var lead = document.querySelector(".lead");
+      var actions = document.querySelector(".hero__actions");
+      var stats = document.querySelector(".hero__stats");
+      var drawn = routeSvg.querySelector(".route__path:not(.route__path--ghost)");
+      var ghost = routeSvg.querySelector(".route__path--ghost");
+      var ctm = routeSvg.getScreenCTM();
+      if (!lead || !actions || !drawn || !ctm) return;
+      var inv = ctm.inverse();
+      var toSvg = function (x, y) {
+        var p = routeSvg.createSVGPoint();
+        p.x = x;
+        p.y = y;
+        return p.matrixTransform(inv);
+      };
+      var lr = lead.getBoundingClientRect();
+      var ar = actions.getBoundingClientRect();
+      var leadLeft = toSvg(lr.left, lr.top);
+      var leadRight = toSvg(lr.right, lr.bottom);
+      var actLeft = toSvg(ar.left, ar.top);
+      var actRight = toSvg(ar.right, ar.bottom);
+      var yUnder = (leadRight.y + actLeft.y) / 2;
+      if (actLeft.y - leadRight.y < 18 && stats) {
+        var sr = stats.getBoundingClientRect();
+        var statsTop = toSvg(sr.left, sr.top).y;
+        if (statsTop - actRight.y >= 18) yUnder = (actRight.y + statsTop) / 2;
+        else yUnder = leadRight.y + 16;
+      }
+      var xStart = leadLeft.x - 40;
+      var xEnd = leadRight.x + 10;
+      var d = [
+        "M", (xStart - 160).toFixed(1), (yUnder - 90).toFixed(1),
+        "C", (xStart - 60).toFixed(1), (yUnder - 50).toFixed(1),
+            (xStart - 10).toFixed(1), (yUnder - 8).toFixed(1),
+            xStart.toFixed(1), yUnder.toFixed(1),
+        "C", ((xStart + xEnd) / 2).toFixed(1), yUnder.toFixed(1),
+            (xEnd - 30).toFixed(1), yUnder.toFixed(1),
+            xEnd.toFixed(1), yUnder.toFixed(1),
+        "C", (xEnd + 160).toFixed(1), yUnder.toFixed(1),
+            (xEnd + 240).toFixed(1), (yUnder - 150).toFixed(1),
+            (xEnd + 400).toFixed(1), (yUnder - 230).toFixed(1),
+        "C", (xEnd + 560).toFixed(1), (yUnder - 310).toFixed(1),
+            (xEnd + 720).toFixed(1), (yUnder - 360).toFixed(1),
+            (xEnd + 900).toFixed(1), (yUnder - 400).toFixed(1)
+      ].join(" ");
+      drawn.setAttribute("d", d);
+      if (ghost) ghost.setAttribute("d", d);
+      var stops = routeSvg.querySelectorAll(".route__stop");
+      var spots = [
+        [xStart - 20, yUnder - 6],
+        [xEnd + 180, yUnder - 40],
+        [xEnd + 460, yUnder - 250]
+      ];
+      stops.forEach(function (stop, i) {
+        if (!spots[i]) return;
+        stop.querySelectorAll("circle").forEach(function (circle) {
+          circle.setAttribute("cx", spots[i][0].toFixed(1));
+          circle.setAttribute("cy", spots[i][1].toFixed(1));
+        });
+      });
+    };
+    layoutRoute();
+    requestAnimationFrame(layoutRoute);
+    window.addEventListener("load", layoutRoute);
+    window.addEventListener("resize", layoutRoute);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutRoute);
+  }
+
   // Footer year
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
