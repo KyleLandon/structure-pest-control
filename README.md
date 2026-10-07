@@ -1,65 +1,22 @@
-# Structure Pest Control — Landing Page
+# Structure Pest Control
 
-Static landing page for [structurepesttx.com](https://structurepesttx.com). No build step.
+Landing page for structurepesttx.com. Static files, no build.
 
-**Live:** https://structure-pest-control.pages.dev (Cloudflare Pages project `structure-pest-control`)
+Live: https://structure-pest-control.pages.dev
 
-## Structure
-
-```
-public/                 Everything in here is published
-  index.html            Landing page (all sections + SEO/schema markup)
-  404.html              Not-found page
-  styles.css            Styles (brand colors are CSS variables; Sora and Manrope are self-hosted)
-  script.js             Nav, scroll reveal, hero animations, contact form submission
-  _headers              Security + caching headers
-  assets/               Logo, photos, favicon, OG image, fonts
-  vendor/leaflet/       Leaflet, loaded only when the service map is near the screen
-functions/api/contact.js  Pages Function: receives the form, forwards to GorillaDesk
-wrangler.toml           Pages config (output dir = public)
-DOCS/                   Client intake notes (never published)
-```
-
-## Local preview
+`public/` is what gets published. `functions/api/contact.js` takes the quote form and forwards it to GorillaDesk. `DOCS/` stays off the site.
 
 ```sh
-npx wrangler pages dev        # serves public/ + the /api/contact function at http://localhost:8788
-```
-
-## Deploy (Cloudflare Pages)
-
-```sh
+npx wrangler pages dev
 npx wrangler pages deploy --branch main
 ```
 
-Direct upload from this folder; no git repo or build step required. Only `public/` and
-`functions/` are published.
+Custom domain: Cloudflare dashboard, Workers & Pages, `structure-pest-control`, Custom domains. The zone for structurepesttx.com has to be in the same account.
 
-### Custom domain
+Pages environment variables:
 
-`structurepesttx.com` is already on Cloudflare. In the Cloudflare dashboard:
-Workers & Pages → `structure-pest-control` → Custom domains → Set up a custom domain → enter
-`structurepesttx.com` (and `www.structurepesttx.com`). Cloudflare adds the DNS records
-automatically since the zone is in the same account. If the domain lives in a *different*
-Cloudflare account, it must be transferred to this one first, or the site re-deployed from
-the account that owns the zone.
+- `GORILLADESK_WEBHOOK_URL`
+- `GORILLADESK_API_KEY` (secret)
+- `TURNSTILE_SECRET_KEY` (optional)
 
-### Environment variables (Pages > Settings > Environment variables)
-
-| Name | Purpose |
-| --- | --- |
-| `GORILLADESK_WEBHOOK_URL` | GorillaDesk lead endpoint the form posts to |
-| `GORILLADESK_API_KEY` | Bearer token for that endpoint. Store it as a secret, not plain text |
-| `TURNSTILE_SECRET_KEY` | Optional. When set, the form must send a Cloudflare Turnstile token |
-
-The function only confirms a request after GorillaDesk accepts it. Until the webhook
-is set, the form asks the visitor to call instead of reporting success. It also
-rejects posts from other sites, oversized bodies, and more than 8 submissions
-per 10 minutes from the same address. It does not write the visitor's details to the log.
-
-## Swapping in brand assets
-
-- **Logo:** replace the `.brand__mark` + `.brand__text` markup in the header/footer with `<img src="/assets/logo.svg" alt="Structure Pest Control">`.
-- **Photos:** replace each `.media-placeholder` div with an `<img>` (hero, 3 service cards, why-us, service-area map).
-- **Colors/fonts:** edit the `:root` variables at the top of `styles.css` and the Google Fonts `<link>` in `index.html`.
-- **OG image:** add `assets/og-image.jpg` (1200×630).
+Until the webhook is set, the form tells people to call. It does not log the lead.

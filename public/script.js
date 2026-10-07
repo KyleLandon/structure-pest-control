@@ -1,8 +1,6 @@
 (function () {
   "use strict";
 
-  // Service area: 40-mile radius around Poth, covering the listed towns.
-  // Leaflet is loaded only when the map is near the screen.
   var mapEl = document.getElementById("serviceMap");
   var drawMap = function () {
     if (!mapEl || !window.L || mapEl.dataset.mapReady) return;
@@ -32,7 +30,7 @@
     }).addTo(map);
 
     var radius = L.circle(poth, {
-      radius: 64374,
+      radius: 64374, // 40 miles
       color: "#168a46",
       weight: 2,
       fillColor: "#22c55e",
@@ -101,11 +99,9 @@
     }
   }
 
-  // Footer year
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Header: solid background once scrolled past the hero top
   var header = document.querySelector(".header");
   if (header) {
     var onScroll = function () {
@@ -115,14 +111,12 @@
     window.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  // Marquee: duplicate the track so the loop is seamless
   var track = document.getElementById("marqueeTrack");
   if (track) track.innerHTML += track.innerHTML;
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-  // Scroll reveal (also drives the process line via .steps)
   var reveals = document.querySelectorAll(".reveal, .steps");
   if ("IntersectionObserver" in window && reveals.length) {
     var io = new IntersectionObserver(
@@ -137,7 +131,6 @@
       { rootMargin: "0px 0px -8% 0px", threshold: 0.1 }
     );
     reveals.forEach(function (el, i) {
-      // Light stagger for siblings that enter together
       if (el.classList.contains("reveal")) el.style.transitionDelay = Math.min((i % 4) * 60, 180) + "ms";
       io.observe(el);
     });
@@ -145,7 +138,6 @@
     reveals.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  // Hero glows lean toward the cursor
   var hero = document.querySelector(".hero");
   if (hero && finePointer && !reduceMotion) {
     var glowRaf = null;
@@ -166,7 +158,6 @@
     });
   }
 
-  // Story cards: booking → on the way → arrived → report, on a loop
   var eta = document.getElementById("storyEta");
   var report = document.getElementById("storyReport");
   if (eta && report) {
@@ -191,7 +182,7 @@
         [4600,  function () { setEta("On the way", "Your tech arrives in <b>8 min</b>", 75, false); }],
         [6600,  function () { setEta("Arrived", "Starting your inspection now", 100, true); }],
         [8400,  function () { report.classList.add("is-on"); }],
-        [13500, null] // loop
+        [13500, null]
       ];
       var runStory = function () {
         steps.forEach(function (s) {
@@ -199,12 +190,10 @@
         });
         setTimeout(runStory, steps[steps.length - 1][0]);
       };
-      // Start once the hero visual has revealed
       setTimeout(runStory, 900);
     }
   }
 
-  // Spotlight hover on cards
   if (finePointer) {
     var spots = document.querySelectorAll(".bento__card:not(.bento__card--cta), .feature, .step, .plan, .review");
     spots.forEach(function (card) {
@@ -217,7 +206,6 @@
     });
   }
 
-  // Magnetic buttons
   if (finePointer && !reduceMotion) {
     document.querySelectorAll(".btn").forEach(function (btn) {
       btn.classList.add("is-magnet");
@@ -236,7 +224,6 @@
     });
   }
 
-  // Mobile nav
   var toggle = document.getElementById("navToggle");
   var nav = document.getElementById("nav");
   if (toggle && nav) {
@@ -256,7 +243,6 @@
     });
   }
 
-  // Contact form
   var form = document.getElementById("contactForm");
   var status = document.getElementById("formStatus");
   var submitBtn = document.getElementById("submitBtn");
@@ -310,7 +296,7 @@
           body: JSON.stringify(data)
         });
         var body = {};
-        try { body = await res.json(); } catch (_) { /* ignore */ }
+        try { body = await res.json(); } catch (_) {}
 
         if (!res.ok || body.ok === false) {
           throw new Error(body.error || "Request failed");

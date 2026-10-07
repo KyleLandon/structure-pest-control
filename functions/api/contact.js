@@ -1,17 +1,6 @@
-/**
- * Cloudflare Pages Function: POST /api/contact
- *
- * Validates a quote request and forwards it to GorillaDesk when configured.
- *
- * Pages > Settings > Environment variables:
- *   GORILLADESK_WEBHOOK_URL   Lead endpoint
- *   GORILLADESK_API_KEY       Bearer token (store as a secret)
- *   TURNSTILE_SECRET_KEY      Optional. When set, the form must include a
- *                             Cloudflare Turnstile token (cf-turnstile-response).
- *
- * Until the webhook is set, the function refuses the request instead of
- * telling the visitor it was received.
- */
+// POST /api/contact
+// Needs GORILLADESK_WEBHOOK_URL (and GORILLADESK_API_KEY) before it will accept a lead.
+// TURNSTILE_SECRET_KEY is optional.
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 const MAX_BODY = 12000;
@@ -123,8 +112,7 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: "Invalid request body" }, 400);
   }
 
-  // Honeypot: real users never fill this in. Respond as if it worked.
-  if (clean(data.company)) return json({ ok: true });
+  if (clean(data.company)) return json({ ok: true }); // bot filled the honeypot
 
   const lead = {
     firstName: clean(data.firstName, 100),
