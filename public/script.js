@@ -7,16 +7,15 @@
     mapEl.dataset.mapReady = "1";
     var poth = [29.0694, -98.0797];
     var towns = [
-      { name: "Poth", ll: poth, home: true },
+      { name: "Poth", ll: poth },
       { name: "Floresville", ll: [29.1336, -98.1561] },
       { name: "La Vernia", ll: [29.3563, -98.1178] },
       { name: "Stockdale", ll: [29.2336, -97.9614] },
-      { name: "Sutherland Springs", ll: [29.273, -98.0564] },
       { name: "Falls City", ll: [28.9791, -98.0189] },
-      { name: "Karnes City", ll: [28.885, -97.9008] },
-      { name: "Pleasanton", ll: [28.9672, -98.4786] },
-      { name: "Seguin", ll: [29.5688, -97.9647] },
-      { name: "San Antonio", ll: [29.4241, -98.4936] }
+      { name: "San Antonio", ll: [29.4241, -98.4936] },
+      { name: "Schertz", ll: [29.5522, -98.2698] },
+      { name: "Cibolo", ll: [29.5619, -98.2267] },
+      { name: "Universal City", ll: [29.548, -98.2914] }
     ];
 
     var map = L.map(mapEl, {
@@ -39,14 +38,14 @@
 
     towns.forEach(function (town) {
       var marker = L.circleMarker(town.ll, {
-        radius: town.home ? 8 : 5.5,
-        color: town.home ? "#06192e" : "#0b5fa5",
+        radius: 5.5,
+        color: "#0b5fa5",
         weight: 2,
-        fillColor: town.home ? "#22c55e" : "#ffffff",
+        fillColor: "#ffffff",
         fillOpacity: 1
       }).addTo(map);
-      marker.bindTooltip(town.home ? "Poth · home base" : town.name, {
-        permanent: !!town.home,
+      marker.bindTooltip(town.name, {
+        permanent: false,
         direction: "top",
         offset: [0, -6],
         className: "map-tip"
@@ -115,6 +114,25 @@
   if (track) track.innerHTML += track.innerHTML;
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var rotator = document.querySelector(".hero-rotator");
+  if (rotator && !reduceMotion) {
+    var frames = rotator.querySelectorAll("img");
+    var frameIndex = 0;
+    var showFrame = function (n) {
+      frames.forEach(function (img, idx) {
+        var on = idx === n;
+        img.classList.toggle("is-on", on);
+        img.setAttribute("aria-hidden", on ? "false" : "true");
+      });
+    };
+    showFrame(0);
+    setInterval(function () {
+      if (document.hidden) return;
+      frameIndex = (frameIndex + 1) % frames.length;
+      showFrame(frameIndex);
+    }, 10000);
+  }
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   var reveals = document.querySelectorAll(".reveal, .steps");
