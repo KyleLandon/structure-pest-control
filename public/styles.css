@@ -290,6 +290,7 @@ h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spac
 
 .glass {
   position: absolute;
+  z-index: 4;
   background: rgba(255, 255, 255, 0.92);
   color: var(--ink);
   border-radius: var(--r-md);
@@ -431,6 +432,7 @@ h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spac
 }
 .media--hero.photo img[data-frame="home"] { object-position: 58% 46%; }
 .media--hero.photo img[data-frame="place"] { object-position: center 40%; }
+.hero-rotator { isolation: isolate; z-index: 1; }
 .hero-rotator img { opacity: 0; transition: opacity 0.9s var(--ease), filter 0.5s; }
 .hero-rotator img.is-on { opacity: 1; z-index: 1; }
 .hero-rotator:hover img { transform: none; }
