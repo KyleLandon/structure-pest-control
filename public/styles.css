@@ -446,7 +446,7 @@ h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spac
   filter: saturate(0.85) contrast(1.05);
   transition: transform 0.8s var(--ease), filter 0.5s;
 }
-.media--hero.photo img { object-position: center 42%; }
+.media--hero.photo img { object-position: center 58%; }
 .photo::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
