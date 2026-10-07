@@ -18,11 +18,11 @@
 
   <link rel="icon" href="/assets/mark.png" type="image/png" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="preload" as="font" href="/assets/fonts/sora-latin.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="image" href="/assets/hero-dusk.webp" type="image/webp" fetchpriority="high"
+        imagesrcset="/assets/hero-dusk-800.webp 800w, /assets/hero-dusk.webp 1200w"
+        imagesizes="(max-width: 900px) 100vw, 860px" />
+  <link rel="stylesheet" href="/styles.css?v=3" />
 
   <!-- Local business schema for Google -->
   <script type="application/ld+json">
@@ -80,7 +80,7 @@
   <header class="header">
     <div class="container header__inner">
       <a class="brand" href="#top" aria-label="Structure Pest Control home">
-        <img src="/assets/logo.png" width="999" height="180" alt="Structure Pest Control" />
+        <img src="/assets/logo.webp" width="444" height="80" alt="Structure Pest Control" />
       </a>
 
       <nav class="nav" id="nav" aria-label="Primary">
@@ -110,29 +110,32 @@
       <div class="hero__bg" aria-hidden="true">
         <div class="hero__glow hero__glow--blue"></div>
         <div class="hero__glow hero__glow--green"></div>
-        <!-- Animated service route: a tech's path drawn across the service area -->
-        <svg class="route" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" fill="none">
-          <path class="route__path route__path--ghost" d="M-40 430 C 40 400, 100 470, 190 512 C 300 518, 500 514, 690 516 C 860 518, 920 400, 1080 320 C 1240 240, 1400 190, 1560 150" />
-          <path class="route__path" d="M-40 430 C 40 400, 100 470, 190 512 C 300 518, 500 514, 690 516 C 860 518, 920 400, 1080 320 C 1240 240, 1400 190, 1560 150" />
-          <g class="route__stop" style="--d:0.9s"><circle cx="150" cy="500" r="3"/><circle class="route__ring" cx="150" cy="500" r="3"/></g>
-          <g class="route__stop" style="--d:1.7s"><circle cx="860" cy="470" r="3"/><circle class="route__ring" cx="860" cy="470" r="3"/></g>
-          <g class="route__stop" style="--d:2.5s"><circle cx="1140" cy="280" r="3"/><circle class="route__ring" cx="1140" cy="280" r="3"/></g>
-        </svg>
       </div>
 
       <div class="container hero__inner">
         <div class="hero__content">
-          <div class="pill reveal">
+          <div class="pill">
             <span class="pill__dot"></span>
             Smart. Safe. Local.
           </div>
-          <h1 class="reveal">Protecting what matters most.</h1>
-          <p class="hero__tagline reveal">Pest control for <em>South Texas</em> homes and properties.</p>
-          <p class="lead reveal">
+          <h1>Protecting what matters most.</h1>
+          <p class="hero__tagline">Pest control for <em>South Texas</em> homes and properties.</p>
+          <p class="lead">
             Smarter treatments, clear communication and a team that shows up when they say
             they will. Serving homes and properties from Poth to San Antonio.
           </p>
-          <div class="hero__actions reveal">
+          <svg class="hero__rule" viewBox="0 0 280 14" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="ruleStroke" x1="0" y1="0" x2="280" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#4ade80" stop-opacity="0" />
+                <stop offset="0.08" stop-color="#4ade80" stop-opacity="0.95" />
+                <stop offset="0.62" stop-color="#4ade80" stop-opacity="0.72" />
+                <stop offset="1" stop-color="#4ade80" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path d="M4 9 C 70 9.5, 150 4, 276 6.5" stroke="url(#ruleStroke)" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <div class="hero__actions">
             <a class="btn btn--accent btn--lg" href="#contact">
               Get a Free Quote
               <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -143,17 +146,20 @@
             </a>
             <a class="hero__plans" href="#services">See our services <span aria-hidden="true">→</span></a>
           </div>
-          <dl class="hero__stats reveal">
+          <dl class="hero__stats">
             <div><dt>Licensed</dt><dd>&amp; insured in Texas</dd></div>
             <div><dt>Same-day</dt><dd>response on quotes</dd></div>
             <div><dt>Guaranteed</dt><dd>if pests return, we do</dd></div>
           </dl>
         </div>
 
-        <div class="hero__visual reveal">
-          <img class="hero__mark" src="/assets/mark-white.png" width="445" height="160" alt="" />
+        <div class="hero__visual">
+          <img class="hero__mark" src="/assets/mark-stamp.webp" width="222" height="80" alt="" />
           <div class="media media--hero photo">
-            <img src="/assets/hero-tech.jpg" width="1200" height="1600" fetchpriority="high" decoding="async"
+            <img src="/assets/hero-dusk.webp"
+                 srcset="/assets/hero-dusk-800.webp 800w, /assets/hero-dusk.webp 1200w"
+                 sizes="(max-width: 900px) 100vw, 860px"
+                 width="1200" height="1600" fetchpriority="high" decoding="async"
                  alt="Pest control technician spraying around a limestone home at dusk" />
           </div>
 
@@ -202,17 +208,17 @@
 
         <div class="proof__grid">
           <figure class="review reveal">
-            <div class="review__stars" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="review__stars" role="img" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
             <blockquote>“They texted when they were on the way and sent photos of where the ants were getting in. First company that’s ever done that.”</blockquote>
             <figcaption><strong>Maria G.</strong><span>Floresville</span></figcaption>
           </figure>
           <figure class="review reveal">
-            <div class="review__stars" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="review__stars" role="img" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
             <blockquote>“Mice in the barn and the attic. They sealed the gaps and came back to check. We haven’t seen one since.”</blockquote>
             <figcaption><strong>James R.</strong><span>Poth</span></figcaption>
           </figure>
           <figure class="review reveal">
-            <div class="review__stars" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="review__stars" role="img" aria-label="5 out of 5 stars"><span></span><span></span><span></span><span></span><span></span></div>
             <blockquote>“They explained the plan before they started, and they showed up when they said they would.”</blockquote>
             <figcaption><strong>Danielle S.</strong><span>La Vernia</span></figcaption>
           </figure>
@@ -573,7 +579,7 @@
     <div class="container footer__inner">
       <div class="footer__brand">
         <a class="brand brand--footer" href="#top" aria-label="Structure Pest Control home">
-          <img src="/assets/logo.png" width="999" height="180" alt="Structure Pest Control" />
+          <img src="/assets/logo.webp" width="444" height="80" alt="Structure Pest Control" />
         </a>
         <p>Protecting what matters most. Pest control for homes and properties in Wilson County, San Antonio and surrounding South Texas.</p>
       </div>
@@ -623,7 +629,6 @@
     Call (830) 555-0123
   </a>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
-  <script src="/script.js" defer></script>
+  <script src="/script.js?v=3" defer></script>
 </body>
 </html>

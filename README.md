@@ -10,10 +10,11 @@ Static landing page for [structurepesttx.com](https://structurepesttx.com). No b
 public/                 Everything in here is published
   index.html            Landing page (all sections + SEO/schema markup)
   404.html              Not-found page
-  styles.css            Styles (brand colors/fonts are CSS variables at the top)
+  styles.css            Styles (brand colors are CSS variables; Sora and Manrope are self-hosted)
   script.js             Nav, scroll reveal, hero animations, contact form submission
   _headers              Security + caching headers
-  assets/               Logo, photos, favicon, OG image
+  assets/               Logo, photos, favicon, OG image, fonts
+  vendor/leaflet/       Leaflet, loaded only when the service map is near the screen
 functions/api/contact.js  Pages Function: receives the form, forwards to GorillaDesk
 wrangler.toml           Pages config (output dir = public)
 DOCS/                   Client intake notes (never published)
@@ -48,9 +49,13 @@ the account that owns the zone.
 | Name | Purpose |
 | --- | --- |
 | `GORILLADESK_WEBHOOK_URL` | GorillaDesk lead endpoint the form posts to |
-| `GORILLADESK_API_KEY` | Bearer token for that endpoint |
+| `GORILLADESK_API_KEY` | Bearer token for that endpoint. Store it as a secret, not plain text |
+| `TURNSTILE_SECRET_KEY` | Optional. When set, the form must send a Cloudflare Turnstile token |
 
-Until these are set the function logs the lead and returns success.
+The function only confirms a request after GorillaDesk accepts it. Until the webhook
+is set, the form asks the visitor to call instead of reporting success. It also
+rejects posts from other sites, oversized bodies, and more than 8 submissions
+per 10 minutes from the same address. It does not write the visitor's details to the log.
 
 ## Swapping in brand assets
 

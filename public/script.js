@@ -1,9 +1,12 @@
 (function () {
   "use strict";
 
-  // Service area: 40-mile radius around Poth, covering the listed towns
+  // Service area: 40-mile radius around Poth, covering the listed towns.
+  // Leaflet is loaded only when the map is near the screen.
   var mapEl = document.getElementById("serviceMap");
-  if (mapEl && window.L) {
+  var drawMap = function () {
+    if (!mapEl || !window.L || mapEl.dataset.mapReady) return;
+    mapEl.dataset.mapReady = "1";
     var poth = [29.0694, -98.0797];
     var towns = [
       { name: "Poth", ll: poth, home: true },
@@ -71,77 +74,31 @@
     }
     window.addEventListener("load", resizeMap);
     setTimeout(resizeMap, 400);
-  }
-
-  // Bend the hero route under the paragraph so it doesn't run through the type
-  var routeSvg = document.querySelector(".route");
-  if (routeSvg) {
-    var layoutRoute = function () {
-      var lead = document.querySelector(".lead");
-      var actions = document.querySelector(".hero__actions");
-      var stats = document.querySelector(".hero__stats");
-      var drawn = routeSvg.querySelector(".route__path:not(.route__path--ghost)");
-      var ghost = routeSvg.querySelector(".route__path--ghost");
-      var ctm = routeSvg.getScreenCTM();
-      if (!lead || !actions || !drawn || !ctm) return;
-      var inv = ctm.inverse();
-      var toSvg = function (x, y) {
-        var p = routeSvg.createSVGPoint();
-        p.x = x;
-        p.y = y;
-        return p.matrixTransform(inv);
-      };
-      var lr = lead.getBoundingClientRect();
-      var ar = actions.getBoundingClientRect();
-      var leadLeft = toSvg(lr.left, lr.top);
-      var leadRight = toSvg(lr.right, lr.bottom);
-      var actLeft = toSvg(ar.left, ar.top);
-      var actRight = toSvg(ar.right, ar.bottom);
-      var yUnder = (leadRight.y + actLeft.y) / 2;
-      if (actLeft.y - leadRight.y < 18 && stats) {
-        var sr = stats.getBoundingClientRect();
-        var statsTop = toSvg(sr.left, sr.top).y;
-        if (statsTop - actRight.y >= 18) yUnder = (actRight.y + statsTop) / 2;
-        else yUnder = leadRight.y + 16;
-      }
-      var xStart = leadLeft.x - 40;
-      var xEnd = leadRight.x + 10;
-      var d = [
-        "M", (xStart - 160).toFixed(1), (yUnder - 90).toFixed(1),
-        "C", (xStart - 60).toFixed(1), (yUnder - 50).toFixed(1),
-            (xStart - 10).toFixed(1), (yUnder - 8).toFixed(1),
-            xStart.toFixed(1), yUnder.toFixed(1),
-        "C", ((xStart + xEnd) / 2).toFixed(1), yUnder.toFixed(1),
-            (xEnd - 30).toFixed(1), yUnder.toFixed(1),
-            xEnd.toFixed(1), yUnder.toFixed(1),
-        "C", (xEnd + 160).toFixed(1), yUnder.toFixed(1),
-            (xEnd + 240).toFixed(1), (yUnder - 150).toFixed(1),
-            (xEnd + 400).toFixed(1), (yUnder - 230).toFixed(1),
-        "C", (xEnd + 560).toFixed(1), (yUnder - 310).toFixed(1),
-            (xEnd + 720).toFixed(1), (yUnder - 360).toFixed(1),
-            (xEnd + 900).toFixed(1), (yUnder - 400).toFixed(1)
-      ].join(" ");
-      drawn.setAttribute("d", d);
-      if (ghost) ghost.setAttribute("d", d);
-      var stops = routeSvg.querySelectorAll(".route__stop");
-      var spots = [
-        [xStart - 20, yUnder - 6],
-        [xEnd + 180, yUnder - 40],
-        [xEnd + 460, yUnder - 250]
-      ];
-      stops.forEach(function (stop, i) {
-        if (!spots[i]) return;
-        stop.querySelectorAll("circle").forEach(function (circle) {
-          circle.setAttribute("cx", spots[i][0].toFixed(1));
-          circle.setAttribute("cy", spots[i][1].toFixed(1));
-        });
-      });
+  };
+  if (mapEl) {
+    var loadMap = function () {
+      if (mapEl.dataset.mapLoading) return;
+      mapEl.dataset.mapLoading = "1";
+      var css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "/vendor/leaflet/leaflet.min.css";
+      document.head.appendChild(css);
+      var script = document.createElement("script");
+      script.src = "/vendor/leaflet/leaflet.min.js";
+      script.onload = drawMap;
+      document.body.appendChild(script);
     };
-    layoutRoute();
-    requestAnimationFrame(layoutRoute);
-    window.addEventListener("load", layoutRoute);
-    window.addEventListener("resize", layoutRoute);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutRoute);
+    if ("IntersectionObserver" in window) {
+      var mapWatch = new IntersectionObserver(function (entries) {
+        if (entries.some(function (entry) { return entry.isIntersecting; })) {
+          mapWatch.disconnect();
+          loadMap();
+        }
+      }, { rootMargin: "400px" });
+      mapWatch.observe(mapEl);
+    } else {
+      loadMap();
+    }
   }
 
   // Footer year
@@ -188,33 +145,6 @@
     reveals.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  // Headline: wrap each word so it can fade/blur in individually
-  var h1 = document.querySelector(".hero h1");
-  if (h1 && !reduceMotion) {
-    var wordIndex = 0;
-    var wrapWords = function (node) {
-      Array.prototype.slice.call(node.childNodes).forEach(function (child) {
-        if (child.nodeType === 3) {
-          var frag = document.createDocumentFragment();
-          child.textContent.split(/(\s+)/).forEach(function (part) {
-            if (!part) return;
-            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-            var span = document.createElement("span");
-            span.className = "w";
-            span.style.setProperty("--i", wordIndex++);
-            span.textContent = part;
-            frag.appendChild(span);
-          });
-          node.replaceChild(frag, child);
-        } else if (child.nodeType === 1) {
-          wrapWords(child);
-        }
-      });
-    };
-    wrapWords(h1);
-    h1.classList.add("is-split");
-  }
-
   // Hero glows lean toward the cursor
   var hero = document.querySelector(".hero");
   if (hero && finePointer && !reduceMotion) {
@@ -247,7 +177,7 @@
     var setEta = function (title, html, pct, arrived) {
       etaTitle.textContent = title;
       etaText.innerHTML = html;
-      etaBar.style.width = pct + "%";
+      etaBar.style.transform = "scaleX(" + (pct / 100) + ")";
       eta.classList.toggle("is-arrived", !!arrived);
     };
 
