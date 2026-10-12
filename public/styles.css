@@ -430,10 +430,9 @@ h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spac
   filter: saturate(0.85) contrast(1.05);
   transition: transform 0.8s var(--ease), filter 0.5s;
 }
-.media--hero.photo img[data-frame="home"] { object-position: 58% 46%; }
-.media--hero.photo img[data-pos="entry"] { object-position: center 38%; }
-.media--hero.photo img[data-pos="ranch"] { object-position: center center; }
-.media--hero.photo img[data-frame="place"] { object-position: center 40%; }
+.media--hero.photo img[data-pos="house"] { object-position: center 40%; }
+.media--hero.photo img[data-pos="land"] { object-position: center 68%; }
+.media--hero.photo img[data-frame="place"] { object-position: center 62%; }
 .hero-rotator { isolation: isolate; z-index: 1; }
 .hero-rotator img { opacity: 0; transition: opacity 0.9s var(--ease), filter 0.5s; }
 .hero-rotator img.is-on { opacity: 1; z-index: 1; }

@@ -18,10 +18,8 @@
   <link rel="icon" href="/assets/mark.png" type="image/png" />
 
   <link rel="preload" as="font" href="/assets/fonts/sora-latin.woff2" type="font/woff2" crossorigin />
-  <link rel="preload" as="image" href="/assets/hero-home.webp" type="image/webp" fetchpriority="high"
-        imagesrcset="/assets/hero-home-1000.webp 1000w, /assets/hero-home.webp 1600w"
-        imagesizes="(max-width: 900px) 100vw, 640px" />
-  <link rel="stylesheet" href="/styles.css?v=10" />
+  <link rel="preload" as="image" href="/assets/hero-angled.webp" type="image/webp" fetchpriority="high" />
+  <link rel="stylesheet" href="/styles.css?v=11" />
 
   <script type="application/ld+json">
   {
@@ -157,17 +155,14 @@
         <div class="hero__visual">
           <img class="hero__mark" src="/assets/mark-stamp.webp" width="222" height="80" alt="" />
           <div class="media media--hero photo hero-rotator">
-            <img class="is-on" data-frame="home"
-                 src="/assets/hero-home.webp"
-                 srcset="/assets/hero-home-1000.webp 1000w, /assets/hero-home.webp 1600w"
-                 sizes="(max-width: 900px) 100vw, 640px"
-                 width="1600" height="667" fetchpriority="high" decoding="async"
-                 alt="A limestone home beside a row of shops" />
-            <img data-frame="place" src="/assets/hero-restaurant.webp" width="898" height="2298" alt="A restaurant patio at dusk" decoding="async" />
-            <img data-frame="home" data-pos="entry" src="/assets/hero-house-entry.webp" width="1122" height="1402" alt="A limestone home with a curved front walk at dusk" decoding="async" />
-            <img data-frame="place" src="/assets/hero-office.webp" width="926" height="2298" alt="An office entrance at dusk" decoding="async" />
-            <img data-frame="home" data-pos="ranch" src="/assets/hero-house-ranch.webp" width="680" height="780" alt="A limestone ranch house at sunset" decoding="async" />
-            <img data-frame="place" src="/assets/hero-warehouse.webp" width="906" height="2298" alt="A warehouse loading dock at dusk" decoding="async" />
+            <img class="is-on" data-frame="home" data-pos="house"
+                 src="/assets/hero-angled.webp"
+                 width="1122" height="1402" fetchpriority="high" decoding="async"
+                 alt="A limestone home with a curved front walk at dusk" />
+            <img data-frame="place" src="/assets/hero-cafe.webp" width="458" height="860" alt="A restaurant patio at dusk" decoding="async" />
+            <img data-frame="home" data-pos="land" src="/assets/hero-land.webp" width="1122" height="1402" alt="A South Texas lawn overlooking a pond at sunset" decoding="async" />
+            <img data-frame="place" src="/assets/hero-storefront.webp" width="474" height="860" alt="An office entrance at dusk" decoding="async" />
+            <img data-frame="place" src="/assets/hero-dock.webp" width="444" height="860" alt="A warehouse loading dock at dusk" decoding="async" />
           </div>
 
           <div class="glass glass--report" id="storyReport" data-step="report">
