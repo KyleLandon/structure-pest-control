@@ -84,7 +84,7 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: "Request was rejected" }, 403);
   }
   if (await rateLimited(request)) {
-    return json({ ok: false, error: "Too many requests. Please call us instead." }, 429);
+    return json({ ok: false, error: "Too many requests. Please try again in a few minutes." }, 429);
   }
 
   const declared = Number(request.headers.get("content-length") || 0);

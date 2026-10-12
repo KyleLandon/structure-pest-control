@@ -498,7 +498,7 @@
           </ul>
         </div>
 
-        <form class="form reveal" id="contactForm" action="/api/contact" method="POST" novalidate>
+        <form class="form reveal" id="contactForm" action="https://formsubmit.co/structurepesttx@gmail.com" method="POST" novalidate>
           <div class="form__head">
             <h3>Request a free quote</h3>
             <p>Takes about 30 seconds.</p>
@@ -549,6 +549,9 @@
             <label for="message">Tell us what you're seeing <span class="optional">(optional)</span></label>
             <textarea id="message" name="message" rows="4" placeholder="Ants in the kitchen, scratching in the attic, etc."></textarea>
           </div>
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_subject" value="New quote request from the website" />
           <!-- honeypot -->
           <div class="hp" aria-hidden="true">
             <label for="company">Company</label>

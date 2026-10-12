@@ -4,7 +4,7 @@ Landing page for structurepesttx.com. Static files, no build.
 
 Live: https://structure-pest-control.pages.dev
 
-`public/` is what gets published. `functions/api/contact.js` emails each quote to structurepesttx@gmail.com. `DOCS/` stays off the site.
+`public/` is what gets published. The quote form emails structurepesttx@gmail.com from the browser. `DOCS/` stays off the site.
 
 ```sh
 npx wrangler pages dev

@@ -302,33 +302,48 @@
       }
 
       var data = Object.fromEntries(new FormData(form).entries());
-      data.source = "structurepesttx.com";
-      data.page = window.location.href;
+      if (String(data.company || "").trim()) {
+        form.reset();
+        setStatus("Thanks! We received your request and will be in touch shortly.", "success");
+        return;
+      }
+
+      var name = (data.firstName + " " + data.lastName).trim();
+      var subject = ("Quote request: " + data.service + " — " + name).replace(/[\r\n\t]+/g, " ");
 
       submitBtn.disabled = true;
       var original = submitBtn.textContent;
       submitBtn.textContent = "Sending…";
 
       try {
-        var res = await fetch(form.action, {
+        var res = await fetch("https://formsubmit.co/ajax/structurepesttx@gmail.com", {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(data)
+          body: JSON.stringify({
+            name: name,
+            email: data.email,
+            phone: data.phone,
+            address: data.address || "Not provided",
+            service: data.service,
+            message: data.message || "Not provided",
+            page: window.location.href,
+            _subject: subject,
+            _template: "table",
+            _captcha: "false",
+            _replyto: data.email
+          })
         });
         var body = {};
         try { body = await res.json(); } catch (_) {}
 
-        if (!res.ok || body.ok === false) {
-          throw new Error(body.error || "Request failed");
+        if (!res.ok || (body.success !== true && body.success !== "true")) {
+          throw new Error(body.message || "Request failed");
         }
 
         form.reset();
         setStatus("Thanks! We received your request and will be in touch shortly.", "success");
       } catch (err) {
-        setStatus(
-          "Something went wrong sending your request. Please call us at (830) 490-1005.",
-          "error"
-        );
+        setStatus("Something went wrong sending your request. Please try again.", "error");
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = original;
