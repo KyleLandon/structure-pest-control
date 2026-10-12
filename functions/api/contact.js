@@ -1,11 +1,12 @@
 // POST /api/contact
-// Needs GORILLADESK_WEBHOOK_URL (and GORILLADESK_API_KEY) before it will accept a lead.
-// TURNSTILE_SECRET_KEY is optional.
+// Emails the quote to the business inbox. TURNSTILE_SECRET_KEY is optional.
+// The first delivery asks FormSubmit to confirm structurepesttx@gmail.com.
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 const MAX_BODY = 12000;
 const RATE_LIMIT = 8;
 const RATE_WINDOW = 600;
+const QUOTE_TO = "structurepesttx@gmail.com";
 
 const ALLOWED_HOSTS = new Set([
   "structurepesttx.com",
@@ -21,6 +22,10 @@ function json(body, status = 200) {
 
 function clean(v, max = 500) {
   return String(v ?? "").trim().slice(0, max);
+}
+
+function singleLine(v, max = 180) {
+  return clean(v, max).replace(/[\r\n\t]+/g, " ");
 }
 
 function originAllowed(request) {
@@ -143,31 +148,60 @@ export async function onRequestPost({ request, env }) {
     }
   }
 
-  if (!env.GORILLADESK_WEBHOOK_URL) {
-    console.log("Quote request refused: GorillaDesk webhook is not configured");
-    return json({ ok: false, error: "Online quotes are not available yet. Please call us." }, 503);
-  }
+  const subject = singleLine(
+    `Quote request: ${lead.service} — ${lead.firstName} ${lead.lastName}`
+  );
 
   try {
-    const headers = { "Content-Type": "application/json" };
-    if (env.GORILLADESK_API_KEY) headers.Authorization = `Bearer ${env.GORILLADESK_API_KEY}`;
+    const res = await fetch(
+      "https://formsubmit.co/ajax/" + encodeURIComponent(QUOTE_TO),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Origin: "https://structurepesttx.com",
+          Referer: "https://structurepesttx.com/",
+        },
+        body: JSON.stringify({
+          name: singleLine(`${lead.firstName} ${lead.lastName}`, 200),
+          email: lead.email,
+          phone: singleLine(lead.phone, 40),
+          address: singleLine(lead.address, 300) || "Not provided",
+          service: singleLine(lead.service, 100),
+          message: lead.message || "Not provided",
+          page: singleLine(lead.page, 500),
+          _subject: subject,
+          _template: "table",
+          _captcha: "false",
+          _replyto: lead.email,
+        }),
+      }
+    );
 
-    const res = await fetch(env.GORILLADESK_WEBHOOK_URL, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(lead),
-    });
+    let outcome = {};
+    try {
+      outcome = await res.json();
+    } catch {
+      outcome = {};
+    }
 
-    if (!res.ok) {
-      console.error("GorillaDesk forward failed", res.status);
+    const delivered = res.ok && (outcome.success === true || outcome.success === "true");
+    if (!delivered) {
+      const notice = String(outcome.message || "");
+      if (/activat/i.test(notice)) {
+        console.error("Quote email is waiting on inbox confirmation");
+      } else {
+        console.error("Quote email forward failed", res.status);
+      }
       return json({ ok: false, error: "Unable to submit the request right now" }, 502);
     }
   } catch {
-    console.error("GorillaDesk forward error");
+    console.error("Quote email forward error");
     return json({ ok: false, error: "Unable to submit the request right now" }, 502);
   }
 
-  console.log("Quote request forwarded");
+  console.log("Quote request emailed");
   return json({ ok: true });
 }
 

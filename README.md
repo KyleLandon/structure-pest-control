@@ -4,7 +4,7 @@ Landing page for structurepesttx.com. Static files, no build.
 
 Live: https://structure-pest-control.pages.dev
 
-`public/` is what gets published. `functions/api/contact.js` takes the quote form and forwards it to GorillaDesk. `DOCS/` stays off the site.
+`public/` is what gets published. `functions/api/contact.js` emails each quote to structurepesttx@gmail.com. `DOCS/` stays off the site.
 
 ```sh
 npx wrangler pages dev
@@ -15,8 +15,6 @@ Custom domain: Cloudflare dashboard, Workers & Pages, `structure-pest-control`, 
 
 Pages environment variables:
 
-- `GORILLADESK_WEBHOOK_URL`
-- `GORILLADESK_API_KEY` (secret)
 - `TURNSTILE_SECRET_KEY` (optional)
 
-Until the webhook is set, the form tells people to call. It does not log the lead.
+The first quote email asks FormSubmit to confirm structurepesttx@gmail.com. Open that message and activate the form. Later submissions arrive in that inbox, and Reply goes to the customer. The function does not log the lead.
