@@ -6,6 +6,8 @@
     if (!mapEl || !window.L || mapEl.dataset.mapReady) return;
     mapEl.dataset.mapReady = "1";
     var poth = [29.0694, -98.0797];
+    // East rim at Seguin, south rim at Falls City, just outside Loop 1604 around San Antonio.
+    var area = [29.2987, -98.3462];
     var towns = [
       { name: "Poth", ll: poth },
       { name: "Floresville", ll: [29.1336, -98.1561] },
@@ -22,14 +24,14 @@
       scrollWheelZoom: false,
       zoomControl: true
     });
-    map.setView(poth, 9);
+    map.setView(area, 10);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 18,
       attribution: "&copy; OpenStreetMap"
     }).addTo(map);
 
-    var radius = L.circle(poth, {
-      radius: 64374, // 40 miles
+    var radius = L.circle(area, {
+      radius: 47635, // 29.6 miles
       color: "#168a46",
       weight: 2,
       fillColor: "#22c55e",
@@ -324,7 +326,7 @@
         setStatus("Thanks! We received your request and will be in touch shortly.", "success");
       } catch (err) {
         setStatus(
-          "Something went wrong sending your request. Please call us at (830) 555-0123.",
+          "Something went wrong sending your request. Please call us at (830) 490-1005.",
           "error"
         );
       } finally {
